@@ -39,7 +39,7 @@ jobs:
         id: check_version
         run: |
           if [ "${{ env.VERSION }}" = "${{ steps.get_latest_release.outputs.result }}" ]; then
-            echo "Version has not changed, skipping subsequent steps..."
+            echo "::warning::Version has not changed, skipping subsequent steps..."
             echo "VERSION_CHANGED=false" >> $GITHUB_ENV
           else
             echo "VERSION_CHANGED=true" >> $GITHUB_ENV
