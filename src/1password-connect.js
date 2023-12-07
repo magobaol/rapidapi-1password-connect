@@ -46,7 +46,7 @@ var opcs = function() {
 opcs.identifier = "it.francescoface.PawExtensions.1password-connect";
 
 // give a display name to your Dynamic Value
-opcs.title = "1Password Connect server Dynamic Value";
+opcs.title = "1Password Connect";
 
 // link to the Dynamic Value documentation
 opcs.help = "https://github.com/magobaol/rapidapi-1password-connect";
