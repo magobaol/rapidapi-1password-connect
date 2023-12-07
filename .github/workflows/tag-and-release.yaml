@@ -28,7 +28,9 @@ jobs:
         run: sudo apt-get install zip
 
       - name: Zip src directory
-        run: zip -r it.francescoface.PawExtensions.1password-connect.zip src
+        run: |
+          cd src
+          zip -r ../it.francescoface.PawExtensions.1password-connect.zip .
 
       - name: Create Git tag
         run: git tag ${{ steps.get_version.outputs.VERSION }}
