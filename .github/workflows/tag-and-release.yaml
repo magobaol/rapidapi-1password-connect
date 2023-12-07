@@ -25,10 +25,8 @@ jobs:
       - name: Zip src directory
         run: zip -r it.francescoface.PawExtensions.1password-connect.zip src
 
-      - name: Set up Git
-        run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
+      - name: Set the git username and email automatically
+        uses: fregante/setup-git-user@v2
 
       - name: Create Git tag
         run: git tag ${{ steps.get_version.outputs.VERSION }}
