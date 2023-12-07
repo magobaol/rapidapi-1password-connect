@@ -44,25 +44,25 @@ jobs:
           fi
 
       - name: Install zip
-        if: ${{ success() }}
+        if: ${{ job.status == 'success' }}
         run: sudo apt-get install zip
 
       - name: Zip src directory
-        if: ${{ success() }}
+        if: ${{ job.status == 'success' }}
         run: |
           cd src
           zip -r ../it.francescoface.PawExtensions.1password-connect.zip .
 
       - name: Create Git tag
-        if: ${{ success() }}
+        if: ${{ job.status == 'success' }}
         run: git tag ${{ steps.get_version.outputs.VERSION }}
 
       - name: Push Git tags
-        if: ${{ success() }}
+        if: ${{ job.status == 'success' }}
         run: git push origin --tags
 
       - name: Create Release
-        if: ${{ success() }}
+        if: ${{ job.status == 'success' }}
         id: create_release
         uses: actions/create-release@v1
         env:
@@ -74,7 +74,7 @@ jobs:
           prerelease: false
 
       - name: Upload Release Asset
-        if: ${{ success() }}
+        if: ${{ job.status == 'success' }}
         id: upload-release-asset
         uses: actions/upload-release-asset@v1
         env:
