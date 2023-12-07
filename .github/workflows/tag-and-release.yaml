@@ -36,27 +36,33 @@ jobs:
             return releases.data[0].tag_name;
 
       - name: Check if version has changed
+        continue-on-error: true
         run: |
           if [ "${{ steps.get_version.outputs.VERSION }}" = "${{ steps.get_latest_release.outputs.result }}" ]; then
-            echo "::warning::Version has not changed, exiting..."
-            exit 0
+            echo "::warning::Version has not changed, skipping subsequent steps..."
+            exit 1
           fi
 
       - name: Install zip
+        if: ${{ success() }}
         run: sudo apt-get install zip
 
       - name: Zip src directory
+        if: ${{ success() }}
         run: |
           cd src
           zip -r ../it.francescoface.PawExtensions.1password-connect.zip .
 
       - name: Create Git tag
+        if: ${{ success() }}
         run: git tag ${{ steps.get_version.outputs.VERSION }}
 
       - name: Push Git tags
+        if: ${{ success() }}
         run: git push origin --tags
 
       - name: Create Release
+        if: ${{ success() }}
         id: create_release
         uses: actions/create-release@v1
         env:
@@ -68,6 +74,7 @@ jobs:
           prerelease: false
 
       - name: Upload Release Asset
+        if: ${{ success() }}
         id: upload-release-asset
         uses: actions/upload-release-asset@v1
         env:
