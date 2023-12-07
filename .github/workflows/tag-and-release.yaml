@@ -38,8 +38,8 @@ jobs:
       - name: Check if version has changed
         run: |
           if [ "${{ steps.get_version.outputs.VERSION }}" = "${{ steps.get_latest_release.outputs.result }}" ]; then
-            echo "::error::Version has not changed, exiting..."
-            exit 1
+            echo "::warning::Version has not changed, exiting..."
+            exit 0
           fi
 
       - name: Install zip
