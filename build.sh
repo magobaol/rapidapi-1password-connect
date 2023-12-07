@@ -17,9 +17,9 @@ fi
 cp -r ./src/* ./build/it.francescoface.PawExtensions.1password-connect/
 
 # Delete everything inside the target directory before copying
-if [ -d /Users/francesco/Library/Containers/com.luckymarmot.Paw/Data/Library/Application\ Support/com.luckymarmot.Paw/Extensions/it.francescoface.PawExtensions.1password-connect ]; then
-  rm -rf /Users/francesco/Library/Containers/com.luckymarmot.Paw/Data/Library/Application\ Support/com.luckymarmot.Paw/Extensions/it.francescoface.PawExtensions.1password-connect/*
+if [ -d ~/Library/Containers/com.luckymarmot.Paw/Data/Library/Application\ Support/com.luckymarmot.Paw/Extensions/it.francescoface.PawExtensions.1password-connect ]; then
+  rm -rf ~/Library/Containers/com.luckymarmot.Paw/Data/Library/Application\ Support/com.luckymarmot.Paw/Extensions/it.francescoface.PawExtensions.1password-connect/*
 fi
 
 # Copy the directory it.francescoface.PawExtensions.1password-connect into the specified path
-cp -r ./build/it.francescoface.PawExtensions.1password-connect /Users/francesco/Library/Containers/com.luckymarmot.Paw/Data/Library/Application\ Support/com.luckymarmot.Paw/Extensions/
+cp -r ./build/it.francescoface.PawExtensions.1password-connect ~/Library/Containers/com.luckymarmot.Paw/Data/Library/Application\ Support/com.luckymarmot.Paw/Extensions/
