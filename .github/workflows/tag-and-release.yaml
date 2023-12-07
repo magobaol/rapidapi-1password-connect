@@ -22,7 +22,7 @@ jobs:
 
       - name: Get version
         id: get_version
-        run: echo "VERSION=$(cat VERSION)" >> $GITHUB_OUTPUT
+        run: echo "VERSION=$(cat VERSION)" >> $GITHUB_ENV
 
       - name: Get latest release
         id: get_latest_release
@@ -36,45 +36,47 @@ jobs:
             return releases.data[0].tag_name;
 
       - name: Check if version has changed
-        continue-on-error: true
+        id: check_version
         run: |
-          if [ "${{ steps.get_version.outputs.VERSION }}" = "${{ steps.get_latest_release.outputs.result }}" ]; then
-            echo "::warning::Version has not changed, skipping subsequent steps..."
-            exit 1
+          if [ "${{ env.VERSION }}" = "${{ steps.get_latest_release.outputs.result }}" ]; then
+            echo "Version has not changed, skipping subsequent steps..."
+            echo "VERSION_CHANGED=false" >> $GITHUB_ENV
+          else
+            echo "VERSION_CHANGED=true" >> $GITHUB_ENV
           fi
 
       - name: Install zip
-        if: ${{ job.status == 'success' }}
+        if: ${{ env.VERSION_CHANGED == 'true' }}
         run: sudo apt-get install zip
 
       - name: Zip src directory
-        if: ${{ job.status == 'success' }}
+        if: ${{ env.VERSION_CHANGED == 'true' }}
         run: |
           cd src
           zip -r ../it.francescoface.PawExtensions.1password-connect.zip .
 
       - name: Create Git tag
-        if: ${{ job.status == 'success' }}
-        run: git tag ${{ steps.get_version.outputs.VERSION }}
+        if: ${{ env.VERSION_CHANGED == 'true' }}
+        run: git tag ${{ env.VERSION }}
 
       - name: Push Git tags
-        if: ${{ job.status == 'success' }}
+        if: ${{ env.VERSION_CHANGED == 'true' }}
         run: git push origin --tags
 
       - name: Create Release
-        if: ${{ job.status == 'success' }}
+        if: ${{ env.VERSION_CHANGED == 'true' }}
         id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ steps.get_version.outputs.VERSION }}
-          release_name: Release ${{ steps.get_version.outputs.VERSION }}
+          tag_name: ${{ env.VERSION }}
+          release_name: Release ${{ env.VERSION }}
           draft: false
           prerelease: false
 
       - name: Upload Release Asset
-        if: ${{ job.status == 'success' }}
+        if: ${{ env.VERSION_CHANGED == 'true' }}
         id: upload-release-asset
         uses: actions/upload-release-asset@v1
         env:
